@@ -9,8 +9,8 @@ def requested_type(type):
     types = [row.name for row in Type.query.all()]
     return True if type in types else False
 
-@admin_bp.route('/admin/', defaults={'type': 'page'})
-@admin_bp.route('/admin/<type>')
+@admin_bp.route('/', defaults={'type': 'page'})
+@admin_bp.route('/<type>')
 def content(type):
     if requested_type(type):
         content = Content.query.join(Type).filter(Type.name == type)
@@ -18,7 +18,7 @@ def content(type):
     else:
         abort(404)
 
-@admin_bp.route('/admin/create/<type>')
+@admin_bp.route('/create/<type>')
 def create(type):
     if requested_type(type):
         types = Type.query.all()
@@ -26,12 +26,12 @@ def create(type):
     else:
         abort(404)
 
-@admin_bp.route('/admin/users')
+@admin_bp.route('/users')
 def users():
     users = User.query.all()
     return render_template('admin/users.html', title='Users', users=users)
 
-@admin_bp.route('/admin/settings')
+@admin_bp.route('/settings')
 def settings():
     settings = Setting.query.all()
     return render_template('admin/settings.html', title='Settings', settings=settings)
